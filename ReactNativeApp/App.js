@@ -1,16 +1,17 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
+import HomePage from "./components/HomePage";
+
+const styles = StyleSheet.create({
+  container: {
+    height: "100%"
+  }
+});
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Universal React with Expo</Text>
+    <View style={styles.container} className="apps">
+      <HomePage />
     </View>
   );
 }
