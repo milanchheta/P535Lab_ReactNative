@@ -1,17 +1,17 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import HomePage from "./components/HomePage";
+import Forms from "./components/Forms";
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%"
+    flex: 1
   }
 });
 
 export default function App() {
   return (
-    <View style={styles.container} className="apps">
-      <HomePage />
+    <View style={styles.container}>
+      <Forms />
     </View>
   );
 }
