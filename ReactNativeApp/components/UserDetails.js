@@ -57,7 +57,14 @@ export default function UserDetails() {
 
   const onSubmit = () => {
     console.log(
-      "\nGender: " + gender + "\nDate of birth: " + date + "\nBio: " + bio
+      "\nGender: " +
+        gender +
+        "\nDate of birth: " +
+        date +
+        "\nCountry: " +
+        country +
+        "\nBio: " +
+        bio
     );
     setBio("");
     setCountry("");
@@ -98,7 +105,7 @@ export default function UserDetails() {
         <TextInput
           onChangeText={text => setCountry(text)}
           value={country}
-          placeholder="Enter your Nationality"
+          placeholder="Enter your Country..."
         />
       </View>
       <View style={styles.textArea}>
