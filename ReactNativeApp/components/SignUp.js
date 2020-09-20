@@ -7,7 +7,15 @@ import {
   Alert,
   Text
 } from "react-native";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateemail,
+  updatefirstnamne,
+  updatelastname,
+  updatepassword,
+  updatenumber,
+  onsubmit
+} from "./signUpActions";
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -57,32 +65,17 @@ const styles = StyleSheet.create({
 });
 
 export default function SignUp({ setshowModal }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [firstname, setFirstname] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
-  const [number, setNumber] = React.useState("");
+  const dispatch = useDispatch();
+  const email = useSelector(state => state.email);
+  const password = useSelector(state => state.password);
+  const firstname = useSelector(state => state.firstname);
+  const lastname = useSelector(state => state.lastname);
+  const number = useSelector(state => state.number);
 
   const onSubmit = () => {
-    console.log(
-      "\nEmail: " +
-        email +
-        "\nPassword: " +
-        password +
-        "\nFirst Name: " +
-        firstname +
-        "\nLast Name: " +
-        lastname +
-        "\nPhone Number: " +
-        number
-    );
-    setEmail("");
-    setPassword("");
-    setFirstname("");
-    setLastname("");
-    setNumber("");
-    Alert.alert("Check console for collected input data");
+    Alert.alert("Check console for output");
     setshowModal(false);
+    dispatch(onsubmit());
   };
   return (
     <View style={styles.container}>
@@ -91,31 +84,31 @@ export default function SignUp({ setshowModal }) {
           <Text style={styles.textHeading}>Sign Up form</Text>
           <TextInput
             style={styles.textInput}
-            onChangeText={text => setEmail(text)}
+            onChangeText={text => dispatch(updateemail(text))}
             value={email}
             placeholder="Email..."
           />
           <TextInput
             style={styles.textInput}
-            onChangeText={text => setPassword(text)}
+            onChangeText={text => dispatch(updatepassword(text))}
             value={password}
             placeholder="Password..."
           />
           <TextInput
             style={styles.textInput}
-            onChangeText={text => setFirstname(text)}
+            onChangeText={text => dispatch(updatefirstnamne(text))}
             value={firstname}
             placeholder="First Name..."
           />
           <TextInput
             style={styles.textInput}
-            onChangeText={text => setLastname(text)}
+            onChangeText={text => dispatch(updatelastname(text))}
             value={lastname}
             placeholder="Last Name..."
           />
           <TextInput
             style={styles.textInput}
-            onChangeText={no => setNumber(no)}
+            onChangeText={no => dispatch(updatenumber(no))}
             value={number}
             placeholder="Phone Number..."
           />
