@@ -7,6 +7,8 @@ import {
   Modal,
   ScrollView
 } from "react-native";
+import { useSelector } from "react-redux";
+
 import SignUp from "./SignUp";
 import UserDetails from "./UserDetails";
 
@@ -27,21 +29,49 @@ const styles = StyleSheet.create({
     margin: 10
   },
   moduleheading: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: "bold",
     margin: 10
+  },
+  currentUserHeading: {
+    marginHorizontal: 20,
+    fontWeight: "bold",
+    fontSize: 15
+  },
+  currentUser: {
+    marginHorizontal: 20
   }
 });
 
 export default function Forms() {
   const [showModal, setshowModal] = useState(false);
+  const email = useSelector(state => state.email);
+  const firstname = useSelector(state => state.firstname);
+  const lastname = useSelector(state => state.lastname);
+  const number = useSelector(state => state.number);
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.textHeading}>Assignment Week 4</Text>
+        <Text style={styles.textHeading}>Assignment Week 5</Text>
         <View>
-          <Text style={styles.moduleheading}>1. Sign Up Module </Text>
+          <Text style={styles.moduleheading}> Sign Up Module </Text>
+
+          <Text style={styles.currentUserHeading}>
+            Previous Sign Up Details (Previous application state is stored in
+            `AsyncStorage` using redux-persist):
+          </Text>
+          <Text style={styles.currentUser}>
+            {"\nFirst name: " +
+              firstname +
+              "\nLast name: " +
+              lastname +
+              "\nEmail: " +
+              email +
+              "\nNumber: " +
+              number}
+          </Text>
+
           <Modal
             animationType="slide"
             transparent={true}
@@ -60,8 +90,8 @@ export default function Forms() {
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.moduleheading}>2. User Details form </Text>
-          <UserDetails />
+          {/* <Text style={styles.moduleheading}>2. User Details form </Text> */}
+          {/* <UserDetails /> */}
         </View>
       </ScrollView>
     </View>

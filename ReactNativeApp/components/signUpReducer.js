@@ -55,13 +55,7 @@ const signUpReducer = (state = initialState, action) => {
       };
     case "ON_SUBMIT":
       console.log("User registered with below details:\n", state);
-      return {
-        email: "",
-        firstname: "",
-        lastname: "",
-        password: "",
-        number: ""
-      };
+      return state;
 
     default:
       return state;
