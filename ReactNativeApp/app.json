@@ -1,0 +1,22 @@
+{
+    "expo": {
+        "name": "Assignment7",
+        "slug": "Assignment7",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": [
+            "*/"
+        ],
+        "ios": {
+            "supportsTablet": true
+        },
+        "web": {},
+        "android": {
+            "useNextNotificationsApi": true,
+            "package": "com.milanchheta.Assignment7"
+        }
+    }
+}

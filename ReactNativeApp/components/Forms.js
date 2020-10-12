@@ -7,11 +7,56 @@ import {
   Modal,
   ScrollView
 } from "react-native";
-import { useSelector } from "react-redux";
 
 import SignUp from "./SignUp";
-import UserDetails from "./UserDetails";
+import Login from "./Login";
 
+export default function Forms(props) {
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <Text style={styles.textHeading}>Assignment Week 7</Text>
+        <View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={showSignUp}
+            overFullScreen
+          >
+            <SignUp setshowModal={setShowSignUp} />
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={showLogin}
+            overFullScreen
+          >
+            <Login setshowModal={setShowLogin} navigation={props.navigation} />
+          </Modal>
+          <TouchableOpacity
+            onPress={() => {
+              setShowSignUp(true);
+            }}
+            style={styles.button}
+          >
+            <Text>Sign Up </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setShowLogin(true);
+            }}
+            style={styles.button}
+          >
+            <Text>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -42,58 +87,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   }
 });
-
-export default function Forms() {
-  const [showModal, setshowModal] = useState(false);
-  const email = useSelector(state => state.email);
-  const firstname = useSelector(state => state.firstname);
-  const lastname = useSelector(state => state.lastname);
-  const number = useSelector(state => state.number);
-
-  return (
-    <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.textHeading}>Assignment Week 5</Text>
-        <View>
-          <Text style={styles.moduleheading}> Sign Up Module </Text>
-
-          <Text style={styles.currentUserHeading}>
-            Previous Sign Up Details (Previous application state is stored in
-            `AsyncStorage` using redux-persist):
-          </Text>
-          <Text style={styles.currentUser}>
-            {"\nFirst name: " +
-              firstname +
-              "\nLast name: " +
-              lastname +
-              "\nEmail: " +
-              email +
-              "\nNumber: " +
-              number}
-          </Text>
-
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={showModal}
-            overFullScreen
-          >
-            <SignUp setshowModal={setshowModal} />
-          </Modal>
-          <TouchableOpacity
-            onPress={() => {
-              setshowModal(true);
-            }}
-            style={styles.button}
-          >
-            <Text>Sign Up </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          {/* <Text style={styles.moduleheading}>2. User Details form </Text> */}
-          {/* <UserDetails /> */}
-        </View>
-      </ScrollView>
-    </View>
-  );
-}

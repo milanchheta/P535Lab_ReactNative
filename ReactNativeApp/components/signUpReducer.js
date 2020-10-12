@@ -1,61 +1,61 @@
+import { Alert } from "react-native";
 const initialState = {
   email: "",
   firstname: "",
   lastname: "",
   password: "",
-  number: ""
+  number: "",
+  imageuri: "",
+  data: {}
 };
 
 const signUpReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ON_CHANGE_EMAIL":
-      console.log(
-        "State management of input change using redux -> Email:",
-        action.data
-      );
       return {
         ...state,
         email: action.data
       };
     case "ON_CHANGE_FIRSTNAME":
-      console.log(
-        "State management of input change using redux -> First Name:",
-        action.data
-      );
       return {
         ...state,
         firstname: action.data
       };
+    case "ON_UPLOAD_IMAGE":
+      return {
+        ...state,
+        imageuri: action.data
+      };
     case "ON_CHANGE_LASTNAME":
-      console.log(
-        "State management of input change using redux -> Last Name:",
-        action.data
-      );
       return {
         ...state,
         lastname: action.data
       };
     case "ON_CHANGE_PASSWORD":
-      console.log(
-        "State management of input change using redux -> Password:",
-        action.data
-      );
       return {
         ...state,
         password: action.data
       };
     case "ON_CHANGE_NUMBER":
-      console.log(
-        "State management of input change using redux -> Number:",
-        action.data
-      );
       return {
         ...state,
         number: action.data
       };
     case "ON_SUBMIT":
-      console.log("User registered with below details:\n", state);
-      return state;
+      let data = state.data;
+      data[action.data.email] = {
+        firstname: action.data.firstname,
+        lastname: action.data.lastname,
+        password: action.data.password,
+        number: action.data.number,
+        imageuri: action.data.imageuri
+      };
+      Alert.alert("Signed Up successfully!");
+
+      return {
+        ...state,
+        data
+      };
 
     default:
       return state;

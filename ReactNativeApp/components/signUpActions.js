@@ -18,7 +18,12 @@ export const updatenumber = number => ({
   type: "ON_CHANGE_NUMBER",
   data: number
 });
+export const updateimage = uri => ({
+  type: "ON_UPLOAD_IMAGE",
+  data: uri
+});
 
-export const onsubmit = () => ({
-  type: "ON_SUBMIT"
+export const onsubmit = data => ({
+  type: "ON_SUBMIT",
+  data: data
 });

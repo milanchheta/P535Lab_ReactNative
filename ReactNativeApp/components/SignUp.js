@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   Alert,
-  Text
+  Text,
+  Button,
+  Platform
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,68 +16,81 @@ import {
   updatelastname,
   updatepassword,
   updatenumber,
+  updateimage,
   onsubmit
 } from "./signUpActions";
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  textInput: {
-    margin: 10,
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 5
-  },
-  textHeading: {
-    alignSelf: "center",
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    margin: 10
-  },
-  closeButton: {
-    alignItems: "center",
-    backgroundColor: "red",
-    padding: 10,
-    margin: 10
-  },
-  modalStyle: {
-    backgroundColor: "white",
-    borderRadius: 5,
-    shadowColor: "#000",
-    minWidth: 300,
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    shadowOpacity: 0.35,
-    shadowRadius: 2.84,
-    elevation: 4,
-    padding: 20
-  }
-});
+import * as ImagePicker from "expo-image-picker";
+// import ImageUpload from "./ImageUpload";
 
 export default function SignUp({ setshowModal }) {
   const dispatch = useDispatch();
-  const email = useSelector(state => state.email);
-  const password = useSelector(state => state.password);
-  const firstname = useSelector(state => state.firstname);
-  const lastname = useSelector(state => state.lastname);
-  const number = useSelector(state => state.number);
-
+  const email = useSelector(state => state.signUp.email);
+  const password = useSelector(state => state.signUp.password);
+  const firstname = useSelector(state => state.signUp.firstname);
+  const lastname = useSelector(state => state.signUp.lastname);
+  const number = useSelector(state => state.signUp.number);
+  const imageuri = useSelector(state => state.signUp.imageuri);
   const onSubmit = () => {
-    Alert.alert("Check console for output");
     setshowModal(false);
-    dispatch(onsubmit());
+    dispatch(
+      onsubmit({
+        email: email,
+        password: password,
+        firstname: firstname,
+        lastname: lastname,
+        number: number,
+        imageuri: imageuri
+      })
+    );
+  };
+
+  const pickImage = async () => {
+    if (Platform.OS !== "web") {
+      const { status } = await ImagePicker.getCameraRollPermissionsAsync();
+      if (status !== "granted") {
+        const {
+          status
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+
+    if (!result.cancelled) {
+      dispatch(updateimage(result.uri));
+      Alert.alert("Image uploaded successfully!");
+    }
+  };
+
+  const takeImage = async () => {
+    if (Platform.OS !== "web") {
+      const { status } = await ImagePicker.getCameraPermissionsAsync();
+      if (status !== "granted") {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera permissions to make this work!");
+        }
+      }
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+
+    if (!result.cancelled) {
+      dispatch(updateimage(result.uri));
+    }
+    Alert.alert("Image uploaded successfully!");
   };
   return (
     <View style={styles.container}>
@@ -112,8 +127,15 @@ export default function SignUp({ setshowModal }) {
             value={number}
             placeholder="Phone Number..."
           />
+
+          <TouchableOpacity style={styles.button} onPress={pickImage}>
+            <Text>Upload an image</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={takeImage}>
+            <Text>Take a photo</Text>
+          </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.submitButton}
             onPress={() => {
               onSubmit();
             }}
@@ -133,3 +155,57 @@ export default function SignUp({ setshowModal }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  textInput: {
+    margin: 10,
+    borderColor: "black",
+    borderWidth: 2,
+    padding: 5
+  },
+  textHeading: {
+    alignSelf: "center",
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
+    margin: 10
+  },
+  submitButton: {
+    alignItems: "center",
+    backgroundColor: "green",
+    padding: 10,
+    margin: 10
+  },
+  closeButton: {
+    alignItems: "center",
+    backgroundColor: "red",
+    padding: 10,
+    margin: 10
+  },
+  modalStyle: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    shadowColor: "#000",
+    minWidth: 300,
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 2.84,
+    elevation: 4,
+    padding: 20
+  }
+});
